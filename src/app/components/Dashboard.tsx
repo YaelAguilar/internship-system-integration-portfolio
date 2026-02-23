@@ -21,7 +21,7 @@ export function Dashboard() {
   
   // Estadísticas según el rol
   const getStats = () => {
-    if (user.rol === 'estudiante') {
+    if (user.rol === 'alumno') {
       const misPracticas = mockPracticas.filter(p => p.estudianteId === user.id);
       const practicaActual = misPracticas.find(p => p.estado === 'en_progreso');
       
@@ -30,7 +30,7 @@ export function Dashboard() {
           label: 'Mis Prácticas',
           value: misPracticas.length,
           icon: Briefcase,
-          color: 'bg-blue-50 text-blue-600',
+          color: 'bg-indigo-50 text-indigo-600',
         },
         {
           label: 'Horas Completadas',
@@ -53,7 +53,7 @@ export function Dashboard() {
       ];
     }
     
-    if (user.rol === 'supervisor') {
+    if (user.rol === 'profesor') {
       const practicasSupervisadas = mockPracticas.filter(p => p.supervisorId === user.id);
       const enProgreso = practicasSupervisadas.filter(p => p.estado === 'en_progreso').length;
       const completadas = practicasSupervisadas.filter(p => p.estado === 'completada').length;
@@ -63,7 +63,7 @@ export function Dashboard() {
           label: 'Total Supervisadas',
           value: practicasSupervisadas.length,
           icon: Users,
-          color: 'bg-blue-50 text-blue-600',
+          color: 'bg-indigo-50 text-indigo-600',
         },
         {
           label: 'En Progreso',
@@ -95,7 +95,7 @@ export function Dashboard() {
           label: 'Total Prácticas',
           value: mockPracticas.length,
           icon: Briefcase,
-          color: 'bg-blue-50 text-blue-600',
+          color: 'bg-indigo-50 text-indigo-600',
         },
         {
           label: 'En Progreso',
@@ -125,10 +125,10 @@ export function Dashboard() {
 
   // Prácticas recientes según el rol
   const getPracticasRecientes = () => {
-    if (user.rol === 'estudiante') {
+    if (user.rol === 'alumno') {
       return mockPracticas.filter(p => p.estudianteId === user.id);
     }
-    if (user.rol === 'supervisor') {
+    if (user.rol === 'profesor') {
       return mockPracticas.filter(p => p.supervisorId === user.id);
     }
     return mockPracticas;
@@ -139,7 +139,7 @@ export function Dashboard() {
   const getEstadoBadge = (estado: string) => {
     switch (estado) {
       case 'en_progreso':
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-indigo-100 text-indigo-700';
       case 'completada':
         return 'bg-green-100 text-green-700';
       case 'pendiente':
@@ -159,8 +159,8 @@ export function Dashboard() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <p className="text-gray-600 mb-1">Bienvenido de nuevo,</p>
-        <h1 className="font-bold text-gray-900">{user.nombre}</h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-1">Bienvenido de nuevo,</p>
+        <h1 className="font-bold text-gray-900 dark:text-gray-100">{user.nombre}</h1>
       </div>
 
       {/* Stats Grid */}
@@ -168,53 +168,53 @@ export function Dashboard() {
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="bg-white rounded-xl p-6 border border-gray-200">
+            <div key={index} className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
               <div className="flex items-start justify-between mb-3">
-                <div className={`p-2.5 rounded-lg ${stat.color}`}>
+                <div className={`p-2.5 rounded-lg ${stat.color} dark:${stat.color.replace('indigo', 'green').replace('bg-indigo-50', 'bg-green-900/30').replace('text-indigo-600', 'text-green-400')}`}>
                   <Icon className="w-5 h-5" />
                 </div>
               </div>
-              <p className="text-gray-600 mb-1">{stat.label}</p>
-              <p className="font-bold text-gray-900">{stat.value}</p>
+              <p className="text-gray-600 dark:text-gray-400 mb-1">{stat.label}</p>
+              <p className="font-bold text-gray-900 dark:text-gray-100">{stat.value}</p>
             </div>
           );
         })}
       </div>
 
       {/* Prácticas Recientes */}
-      <div className="bg-white rounded-xl border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="font-bold text-gray-900">
-            {user.rol === 'estudiante' ? 'Mis Prácticas' : 'Prácticas Recientes'}
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="font-bold text-gray-900 dark:text-gray-100">
+            {user.rol === 'alumno' ? 'Mis Prácticas' : 'Prácticas Recientes'}
           </h2>
         </div>
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {practicasRecientes.length === 0 ? (
-            <div className="px-6 py-8 text-center text-gray-500">
-              <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+            <div className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+              <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
               <p>No hay prácticas registradas</p>
             </div>
           ) : (
             practicasRecientes.map((practica) => (
-              <div key={practica.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
+              <div key={practica.id} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-medium text-gray-900">{practica.estudianteNombre}</h3>
-                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${getEstadoBadge(practica.estado)}`}>
+                      <h3 className="font-medium text-gray-900 dark:text-gray-100">{practica.estudianteNombre}</h3>
+                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${getEstadoBadge(practica.estado)} dark:${getEstadoBadge(practica.estado).replace('indigo', 'green').replace('bg-indigo-100', 'bg-green-900/30').replace('text-indigo-700', 'text-green-400')}`}>
                         {getEstadoLabel(practica.estado)}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-1">{practica.empresaNombre}</p>
-                    <p className="text-sm text-gray-500">{practica.area}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{practica.empresaNombre}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-500">{practica.area}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                       {practica.horasCompletadas} / {practica.horasRequeridas} hrs
                     </p>
-                    <div className="w-32 h-1.5 bg-gray-200 rounded-full mt-2">
+                    <div className="w-32 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full mt-2">
                       <div
-                        className="h-full bg-indigo-600 rounded-full"
+                        className="h-full bg-indigo-600 dark:bg-green-600 rounded-full"
                         style={{
                           width: `${Math.min((practica.horasCompletadas / practica.horasRequeridas) * 100, 100)}%`,
                         }}
@@ -230,11 +230,11 @@ export function Dashboard() {
 
       {/* Período Académico Activo */}
       {periodoActivo && (
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-green-600 dark:to-green-500 rounded-xl p-6 text-white">
           <div className="flex items-start justify-between">
             <div>
               <h3 className="font-bold mb-2">Período Académico Activo</h3>
-              <p className="text-indigo-100 mb-3">{periodoActivo.nombre}</p>
+              <p className="text-indigo-100 dark:text-green-100 mb-3">{periodoActivo.nombre}</p>
               <div className="flex items-center gap-4 text-sm">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />

@@ -1,4 +1,4 @@
-export type UserRole = 'estudiante' | 'supervisor' | 'coordinador' | 'empresa';
+export type UserRole = 'alumno' | 'profesor' | 'coordinador' | 'empresa';
 
 export interface User {
   id: string;
@@ -57,13 +57,13 @@ export const mockUsers: User[] = [
     id: '1',
     nombre: 'Juan Pérez',
     email: 'juan.perez@estudiante.edu',
-    rol: 'estudiante',
+    rol: 'alumno',
   },
   {
     id: '2',
     nombre: 'María García',
     email: 'maria.garcia@supervisor.edu',
-    rol: 'supervisor',
+    rol: 'profesor',
   },
   {
     id: '3',

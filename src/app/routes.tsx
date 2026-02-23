@@ -5,9 +5,10 @@ import { DashboardLayout } from './components/DashboardLayout';
 import { Dashboard } from './components/Dashboard';
 import { PracticasPage } from './components/PracticasPage';
 import { PracticaDetail } from './components/PracticaDetail';
+import { PasantiasPage } from './components/PasantiasPage';
+import { NuevaPasantiaPage } from './components/NuevaPasantiaPage';
 import { PeriodosPage } from './components/PeriodosPage';
 import { DocumentosPage } from './components/DocumentosPage';
-import { PerfilPage } from './components/PerfilPage';
 import { isAuthenticated } from './utils/auth';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -28,6 +29,36 @@ export const router = createBrowserRouter([
       <ProtectedRoute>
         <DashboardLayout>
           <Dashboard />
+        </DashboardLayout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/pasantias',
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout>
+          <PasantiasPage />
+        </DashboardLayout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/pasantias/nueva',
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout>
+          <NuevaPasantiaPage />
+        </DashboardLayout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/pasantias/:id',
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout>
+          <PracticaDetail />
         </DashboardLayout>
       </ProtectedRoute>
     ),
@@ -68,16 +99,6 @@ export const router = createBrowserRouter([
       <ProtectedRoute>
         <DashboardLayout>
           <DocumentosPage />
-        </DashboardLayout>
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/perfil',
-    element: (
-      <ProtectedRoute>
-        <DashboardLayout>
-          <PerfilPage />
         </DashboardLayout>
       </ProtectedRoute>
     ),

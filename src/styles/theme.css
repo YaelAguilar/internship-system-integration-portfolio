@@ -70,12 +70,20 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: #57C42D;
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+  
+  /* Colores verdes para dark mode (reemplazan indigo) */
+  --color-indigo-50: #1A2E1A;
+  --color-indigo-100: #2A4A2A;
+  --color-indigo-200: #3A663A;
+  --color-indigo-500: #7DD45A;
+  --color-indigo-600: #57C42D;
+  --color-indigo-700: #4AA025;
 }
 
 @theme inline {
@@ -117,6 +125,22 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Colores personalizados basados en #2F2FAD (light mode) */
+  --color-indigo-50: #E8E8F5;
+  --color-indigo-100: #D1D1EB;
+  --color-indigo-200: #B8B8E0;
+  --color-indigo-500: #4A4AB8;
+  --color-indigo-600: #2F2FAD;
+  --color-indigo-700: #25258A;
+  
+  /* Colores personalizados basados en #57C42D (dark mode) */
+  --color-green-50: #E8F5E0;
+  --color-green-100: #D1EBC1;
+  --color-green-200: #B8E0A0;
+  --color-green-500: #7DD45A;
+  --color-green-600: #57C42D;
+  --color-green-700: #4AA025;
 }
 
 @layer base {
@@ -124,8 +148,19 @@
     @apply border-border outline-ring/50;
   }
 
+  *,
+  *::before,
+  *::after {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+
   body {
     @apply bg-background text-foreground;
+    transition-property: background-color, color;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /**
@@ -135,6 +170,7 @@
 
   html {
     font-size: var(--font-size);
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   h1 {

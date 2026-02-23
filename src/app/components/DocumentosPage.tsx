@@ -12,12 +12,12 @@ export function DocumentosPage() {
 
   // Filtrar documentos según el rol
   const getDocumentos = () => {
-    if (user.rol === 'estudiante') {
+    if (user.rol === 'alumno') {
       const misPracticas = mockPracticas.filter(p => p.estudianteId === user.id);
       const misPracticasIds = misPracticas.map(p => p.id);
       return mockDocumentos.filter(d => misPracticasIds.includes(d.practicaId));
     }
-    if (user.rol === 'supervisor') {
+    if (user.rol === 'profesor') {
       const practicasSupervisadas = mockPracticas.filter(p => p.supervisorId === user.id);
       const practicasIds = practicasSupervisadas.map(p => p.id);
       return mockDocumentos.filter(d => practicasIds.includes(d.practicaId));
@@ -56,7 +56,7 @@ export function DocumentosPage() {
   const getTipoColor = (tipo: string) => {
     switch (tipo) {
       case 'carta_presentacion':
-        return 'bg-blue-50 text-blue-700 border-blue-200';
+        return 'bg-indigo-50 text-indigo-700 border-indigo-200';
       case 'informe_final':
         return 'bg-green-50 text-green-700 border-green-200';
       case 'evaluacion':
@@ -81,34 +81,34 @@ export function DocumentosPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-bold text-gray-900 mb-1">Documentos</h1>
-          <p className="text-gray-600">Gestión de documentos generados automáticamente</p>
+          <h1 className="font-bold text-gray-900 dark:text-gray-100 mb-1">Documentos</h1>
+          <p className="text-gray-600 dark:text-gray-400">Gestión de documentos generados automáticamente</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+        <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors">
           <FileText className="w-5 h-5" />
           <span>Generar Documento</span>
         </button>
       </div>
 
       {/* Filtros */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Buscar documentos..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
             />
           </div>
           <div className="relative min-w-[250px]">
-            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
             <select
               value={filterTipo}
               onChange={(e) => setFilterTipo(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none appearance-none bg-white"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none appearance-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
             >
               {tipoOptions.map(option => (
                 <option key={option.value} value={option.value}>
@@ -121,47 +121,47 @@ export function DocumentosPage() {
       </div>
 
       {/* Lista de Documentos */}
-      <div className="bg-white rounded-xl border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
         {documentos.length === 0 ? (
           <div className="p-12 text-center">
-            <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-            <h3 className="font-medium text-gray-900 mb-2">No se encontraron documentos</h3>
-            <p className="text-gray-500">
+            <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" />
+            <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-2">No se encontraron documentos</h3>
+            <p className="text-gray-500 dark:text-gray-400">
               {searchTerm || filterTipo !== 'todos'
                 ? 'Intenta ajustar los filtros de búsqueda'
                 : 'Aún no hay documentos generados'}
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {documentos.map((doc) => {
               const practica = mockPracticas.find(p => p.id === doc.practicaId);
               return (
                 <div
                   key={doc.id}
-                  className="p-4 hover:bg-gray-50 transition-colors"
+                  className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-indigo-50 rounded-lg">
-                      <FileText className="w-6 h-6 text-indigo-600" />
+                    <div className="p-3 bg-indigo-50 dark:bg-green-900/30 rounded-lg">
+                      <FileText className="w-6 h-6 text-indigo-600 dark:text-green-400" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-4 mb-2">
                         <div className="flex-1">
-                          <h3 className="font-medium text-gray-900 mb-1">{doc.nombre}</h3>
+                          <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-1">{doc.nombre}</h3>
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className={`px-2 py-0.5 rounded text-xs font-medium border ${getTipoColor(doc.tipo)}`}>
+                            <span className={`px-2 py-0.5 rounded text-xs font-medium border ${getTipoColor(doc.tipo)} dark:${getTipoColor(doc.tipo).replace('indigo', 'green').replace('bg-indigo-50', 'bg-green-900/30').replace('text-indigo-700', 'text-green-400').replace('border-indigo-200', 'border-green-700')}`}>
                               {getTipoDocumento(doc.tipo)}
                             </span>
                           </div>
                         </div>
-                        <button className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm">
+                        <button className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors text-sm">
                           <Download className="w-4 h-4" />
                           <span>Descargar</span>
                         </button>
                       </div>
                       {practica && (
-                        <div className="flex flex-wrap gap-4 text-sm text-gray-600 mt-2">
+                        <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mt-2">
                           <div className="flex items-center gap-1.5">
                             <User className="w-4 h-4" />
                             <span>{practica.estudianteNombre}</span>
@@ -188,12 +188,12 @@ export function DocumentosPage() {
       </div>
 
       {/* Info sobre generación automática */}
-      <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
+      <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
         <div className="flex gap-3">
-          <FileText className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+          <FileText className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="font-medium text-purple-900 mb-1">Generación Automática de PDFs</p>
-            <p className="text-sm text-purple-700">
+            <p className="font-medium text-purple-900 dark:text-purple-200 mb-1">Generación Automática de PDFs</p>
+            <p className="text-sm text-purple-700 dark:text-purple-300">
               Los documentos se generan automáticamente usando Puppeteer cuando se cumplen las
               condiciones establecidas (inicio de práctica, finalización, evaluaciones, etc.).
             </p>
