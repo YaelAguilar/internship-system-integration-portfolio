@@ -1,0 +1,183 @@
+import React, { ReactNode } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router';
+import { getCurrentUser, logout } from '../utils/auth';
+import {
+  LayoutDashboard,
+  Briefcase,
+  Calendar,
+  FileText,
+  User,
+  LogOut,
+  GraduationCap,
+  Menu,
+} from 'lucide-react';
+import { useState } from 'react';
+
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
+
+export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const user = getCurrentUser();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  if (!user) {
+    navigate('/');
+    return null;
+  }
+
+  const navItems = [
+    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['estudiante', 'supervisor', 'coordinador', 'empresa'] },
+    { path: '/practicas', label: 'Prácticas', icon: Briefcase, roles: ['estudiante', 'supervisor', 'coordinador', 'empresa'] },
+    { path: '/periodos', label: 'Períodos', icon: Calendar, roles: ['coordinador', 'supervisor'] },
+    { path: '/documentos', label: 'Documentos', icon: FileText, roles: ['estudiante', 'supervisor', 'coordinador'] },
+    { path: '/perfil', label: 'Perfil', icon: User, roles: ['estudiante', 'supervisor', 'coordinador', 'empresa'] },
+  ];
+
+  const filteredNavItems = navItems.filter(item => item.roles.includes(user.rol));
+
+  const getRoleBadgeColor = (role: string) => {
+    switch (role) {
+      case 'estudiante': return 'bg-blue-100 text-blue-700';
+      case 'supervisor': return 'bg-green-100 text-green-700';
+      case 'coordinador': return 'bg-purple-100 text-purple-700';
+      case 'empresa': return 'bg-orange-100 text-orange-700';
+      default: return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Sidebar - Desktop */}
+      <aside className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+        <div className="flex flex-col flex-grow bg-white border-r border-gray-200">
+          {/* Logo */}
+          <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-200">
+            <div className="flex items-center justify-center w-10 h-10 bg-indigo-600 rounded-lg">
+              <GraduationCap className="w-6 h-6 text-white" />
+            </div>
+            <span className="font-bold text-gray-900">ConectaUP</span>
+          </div>
+
+          {/* User Info */}
+          <div className="px-6 py-4 border-b border-gray-200">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-medium">
+                {user.nombre.charAt(0)}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-gray-900 truncate">{user.nombre}</p>
+                <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${getRoleBadgeColor(user.rol)}`}>
+                  {user.rol.charAt(0).toUpperCase() + user.rol.slice(1)}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 px-3 py-4 space-y-1">
+            {filteredNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+                    isActive
+                      ? 'bg-indigo-50 text-indigo-600'
+                      : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Logout */}
+          <div className="p-3 border-t border-gray-200">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors w-full"
+            >
+              <LogOut className="w-5 h-5" />
+              <span className="font-medium">Cerrar Sesión</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Mobile Header */}
+      <div className="md:hidden bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center w-8 h-8 bg-indigo-600 rounded-lg">
+              <GraduationCap className="w-5 h-5 text-white" />
+            </div>
+            <span className="font-bold text-gray-900">ConectaUP</span>
+          </div>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="border-t border-gray-200 px-2 py-3 space-y-1">
+            <div className="px-3 py-2 mb-2">
+              <p className="font-medium text-gray-900">{user.nombre}</p>
+              <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${getRoleBadgeColor(user.rol)}`}>
+                {user.rol.charAt(0).toUpperCase() + user.rol.slice(1)}
+              </span>
+            </div>
+            {filteredNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+                    isActive
+                      ? 'bg-indigo-50 text-indigo-600'
+                      : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors w-full"
+            >
+              <LogOut className="w-5 h-5" />
+              <span className="font-medium">Cerrar Sesión</span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Main Content */}
+      <main className="md:pl-64">
+        <div className="px-4 py-6 md:px-8">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+}
