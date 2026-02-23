@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from 'react-router';
-import { mockPracticas, mockDocumentos } from '../utils/mockData';
+import { mockPracticas } from '../utils/mockData';
 import { getCurrentUser } from '../utils/auth';
 import {
   ArrowLeft,
@@ -9,8 +9,6 @@ import {
   Calendar,
   Clock,
   MapPin,
-  FileText,
-  Download,
   Edit,
   TrendingUp,
 } from 'lucide-react';
@@ -21,7 +19,6 @@ export function PracticaDetail() {
   const user = getCurrentUser();
 
   const practica = mockPracticas.find(p => p.id === id);
-  const documentos = mockDocumentos.filter(d => d.practicaId === id);
 
   const getBackPath = () => {
     if (user?.rol === 'alumno') {
@@ -63,19 +60,9 @@ export function PracticaDetail() {
     return estado.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   };
 
-  const getTipoDocumento = (tipo: string) => {
-    switch (tipo) {
-      case 'carta_presentacion':
-        return 'Carta de Presentación';
-      case 'informe_final':
-        return 'Informe Final';
-      case 'evaluacion':
-        return 'Evaluación';
-      case 'convenio':
-        return 'Convenio';
-      default:
-        return tipo;
-    }
+  const getEstadoBadgeDark = (estado: string) => {
+    const lightBadge = getEstadoBadge(estado);
+    return lightBadge.replace('indigo', 'green').replace('bg-indigo-100', 'bg-green-900/30').replace('text-indigo-700', 'text-green-400');
   };
 
   const progreso = Math.round((practica.horasCompletadas / practica.horasRequeridas) * 100);
@@ -93,7 +80,7 @@ export function PracticaDetail() {
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1">
               <h1 className="font-bold text-gray-900 dark:text-gray-100">Detalle de Práctica</h1>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getEstadoBadge(practica.estado)} dark:${getEstadoBadge(practica.estado).replace('indigo', 'green').replace('bg-indigo-100', 'bg-green-900/30').replace('text-indigo-700', 'text-green-400')}`}>
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getEstadoBadge(practica.estado)} dark:${getEstadoBadgeDark(practica.estado)}`}>
                 {getEstadoLabel(practica.estado)}
               </span>
             </div>
@@ -107,9 +94,7 @@ export function PracticaDetail() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Información Principal */}
-        <div className="lg:col-span-2 space-y-6">
+      <div className="space-y-6">
           {/* Detalles Generales */}
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
             <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Información General</h2>
@@ -198,24 +183,24 @@ export function PracticaDetail() {
               </div>
               <div className="grid grid-cols-3 gap-4 pt-2">
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-1">Requeridas</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Requeridas</p>
                   <div className="flex items-center justify-center gap-1">
-                    <Clock className="w-4 h-4 text-gray-400" />
-                    <p className="font-bold text-gray-900">{practica.horasRequeridas}</p>
+                    <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                    <p className="font-bold text-gray-900 dark:text-gray-100">{practica.horasRequeridas}</p>
                   </div>
                 </div>
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-1">Completadas</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Completadas</p>
                   <div className="flex items-center justify-center gap-1">
-                    <Clock className="w-4 h-4 text-green-600" />
-                    <p className="font-bold text-green-600">{practica.horasCompletadas}</p>
+                    <Clock className="w-4 h-4 text-green-600 dark:text-green-400" />
+                    <p className="font-bold text-green-600 dark:text-green-400">{practica.horasCompletadas}</p>
                   </div>
                 </div>
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-1">Restantes</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Restantes</p>
                   <div className="flex items-center justify-center gap-1">
-                    <Clock className="w-4 h-4 text-orange-600" />
-                    <p className="font-bold text-orange-600">
+                    <Clock className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                    <p className="font-bold text-orange-600 dark:text-orange-400">
                       {practica.horasRequeridas - practica.horasCompletadas}
                     </p>
                   </div>
@@ -224,49 +209,6 @@ export function PracticaDetail() {
             </div>
           </div>
         </div>
-
-        {/* Sidebar - Documentos */}
-        <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Documentos</h2>
-            {documentos.length === 0 ? (
-              <div className="text-center py-8">
-                <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                <p className="text-sm text-gray-500">No hay documentos generados</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {documentos.map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-indigo-50 dark:bg-green-900/30 rounded-lg">
-                        <FileText className="w-4 h-4 text-indigo-600 dark:text-green-400" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 dark:text-gray-100 text-sm mb-1 truncate">
-                          {getTipoDocumento(doc.tipo)}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {new Date(doc.fechaGeneracion).toLocaleDateString('es-ES')}
-                        </p>
-                      </div>
-                      <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
-                        <Download className="w-4 h-4 text-gray-600" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            <button className="w-full mt-4 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium">
-              Generar Documento
-            </button>
-          </div>
-        </div>
       </div>
-    </div>
   );
 }

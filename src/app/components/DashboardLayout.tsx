@@ -5,7 +5,6 @@ import {
   LayoutDashboard,
   Briefcase,
   Calendar,
-  FileText,
   LogOut,
   GraduationCap,
   Menu,
@@ -44,7 +43,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     { path: '/pasantias/nueva', label: 'Nueva Pasantía', icon: Plus, roles: ['alumno'] },
     { path: '/practicas', label: 'Prácticas', icon: Briefcase, roles: ['profesor', 'coordinador', 'empresa'] },
     { path: '/periodos', label: 'Períodos', icon: Calendar, roles: ['coordinador', 'profesor'] },
-    { path: '/documentos', label: 'Documentos', icon: FileText, roles: ['profesor', 'coordinador'] },
   ];
 
   const filteredNavItems = navItems.filter(item => item.roles.includes(user.rol));

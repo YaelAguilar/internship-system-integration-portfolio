@@ -8,7 +8,6 @@ import { PracticaDetail } from './components/PracticaDetail';
 import { PasantiasPage } from './components/PasantiasPage';
 import { NuevaPasantiaPage } from './components/NuevaPasantiaPage';
 import { PeriodosPage } from './components/PeriodosPage';
-import { DocumentosPage } from './components/DocumentosPage';
 import { isAuthenticated } from './utils/auth';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -89,16 +88,6 @@ export const router = createBrowserRouter([
       <ProtectedRoute>
         <DashboardLayout>
           <PeriodosPage />
-        </DashboardLayout>
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/documentos',
-    element: (
-      <ProtectedRoute>
-        <DashboardLayout>
-          <DocumentosPage />
         </DashboardLayout>
       </ProtectedRoute>
     ),
