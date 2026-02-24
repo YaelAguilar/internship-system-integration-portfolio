@@ -19,4 +19,7 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  // Base path for GitHub Pages
+  base: process.env.NODE_ENV === 'production' ? '/internship-system-integration-portfolio/' : '/',
 })
