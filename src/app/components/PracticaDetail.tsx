@@ -136,7 +136,7 @@ export function PracticaDetail() {
               </div>
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Área</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Carrera</p>
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                     <p className="font-medium text-gray-900 dark:text-gray-100">{practica.area}</p>
@@ -171,8 +171,42 @@ export function PracticaDetail() {
               </div>
             </div>
             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Descripción</p>
-              <p className="text-gray-900 dark:text-gray-100">{practica.descripcion}</p>
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Descripción</h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Descripción General</p>
+                  <p className="text-gray-900 dark:text-gray-100 leading-relaxed">{practica.descripcion}</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Objetivos de la Pasantía</p>
+                    <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
+                      <li>Desarrollar habilidades prácticas en la carrera de {practica.area}</li>
+                      <li>Aplicar conocimientos teóricos en un entorno profesional real</li>
+                      <li>Contribuir al desarrollo de proyectos empresariales</li>
+                      <li>Establecer conexiones profesionales en el sector</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Responsabilidades</p>
+                    <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
+                      <li>Colaborar en proyectos asignados por el supervisor</li>
+                      <li>Participar en reuniones y actividades del equipo</li>
+                      <li>Mantener comunicación constante con el supervisor académico</li>
+                      <li>Cumplir con los horarios y compromisos establecidos</li>
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Requisitos</p>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
+                    <li>Estudiante activo en la carrera de {practica.area}</li>
+                    <li>Disponibilidad para cumplir con {practica.horasRequeridas} horas de práctica</li>
+                    <li>Compromiso y responsabilidad en el desarrollo de las actividades</li>
+                    <li>Habilidades básicas en las tecnologías relacionadas al área</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
