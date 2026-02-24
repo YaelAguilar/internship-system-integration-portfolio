@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
+import { Switch } from './ui/switch';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -59,18 +60,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Theme Toggle Button - Fixed Top Right */}
-      <button
-        onClick={() => setTheme(isDark ? 'light' : 'dark')}
-        className="fixed top-4 right-4 z-50 p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-all hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-        aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-      >
-        {isDark ? (
-          <Sun className="w-5 h-5" />
-        ) : (
-          <Moon className="w-5 h-5" />
-        )}
-      </button>
 
       {/* Sidebar - Desktop */}
       <aside className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
@@ -120,8 +109,25 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             })}
           </nav>
 
-          {/* Logout */}
-          <div className="p-3 border-t border-gray-200 dark:border-gray-700">
+          {/* Theme Toggle & Logout */}
+          <div className="p-3 border-t border-gray-200 dark:border-gray-700 space-y-1">
+            <div className="flex items-center justify-between px-3 py-2.5">
+              <div className="flex items-center gap-3">
+                {isDark ? (
+                  <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                ) : (
+                  <Sun className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                )}
+                <span className="font-medium text-gray-700 dark:text-gray-300">
+                  {isDark ? 'Modo Oscuro' : 'Modo Claro'}
+                </span>
+              </div>
+              <Switch
+                checked={isDark}
+                onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+                aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+              />
+            </div>
             <button
               onClick={handleLogout}
               className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors w-full"
@@ -178,6 +184,23 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 </Link>
               );
             })}
+            <div className="flex items-center justify-between px-3 py-2.5">
+              <div className="flex items-center gap-3">
+                {isDark ? (
+                  <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                ) : (
+                  <Sun className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                )}
+                <span className="font-medium text-gray-700 dark:text-gray-300">
+                  {isDark ? 'Modo Oscuro' : 'Modo Claro'}
+                </span>
+              </div>
+              <Switch
+                checked={isDark}
+                onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+                aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+              />
+            </div>
             <button
               onClick={handleLogout}
               className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors w-full"
