@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { getCurrentUser, logout } from '../utils/auth';
 import {
-  LayoutDashboard,
   Briefcase,
   Calendar,
   LogOut,
@@ -39,10 +38,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['empresa'] },
-    { path: '/pasantias', label: 'Pasantías', icon: Briefcase, roles: ['alumno', 'profesor', 'coordinador'] },
+    { path: '/pasantias', label: 'Pasantías', icon: Briefcase, roles: ['alumno', 'profesor', 'coordinador', 'empresa'] },
     { path: '/pasantias/nueva', label: 'Nueva Pasantía', icon: Plus, roles: ['alumno'] },
-    { path: '/practicas', label: 'Prácticas', icon: Briefcase, roles: ['empresa'] },
     { path: '/periodos', label: 'Períodos', icon: Calendar, roles: ['coordinador'] },
   ];
 

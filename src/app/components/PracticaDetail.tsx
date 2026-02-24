@@ -48,10 +48,7 @@ export function PracticaDetail() {
   };
 
   const getBackPath = () => {
-    if (user?.rol === 'alumno') {
-      return '/pasantias';
-    }
-    return '/practicas';
+    return '/pasantias';
   };
 
   if (!practica || !user) {
@@ -62,7 +59,7 @@ export function PracticaDetail() {
           onClick={() => navigate(getBackPath())}
           className="mt-4 text-indigo-600 dark:text-green-400 hover:text-indigo-700 dark:hover:text-green-500"
         >
-          Volver a {user?.rol === 'alumno' ? 'Pasantías' : 'Prácticas'}
+          Volver a Pasantías
         </button>
       </div>
     );

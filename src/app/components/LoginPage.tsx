@@ -17,11 +17,7 @@ export function LoginPage() {
     
     if (user) {
       // Redirigir según el rol del usuario
-      if (user.rol === 'alumno' || user.rol === 'profesor' || user.rol === 'coordinador') {
-        navigate('/pasantias');
-      } else {
-        navigate('/dashboard');
-      }
+      navigate('/pasantias');
     } else {
       setError('Credenciales inválidas. Usa password: demo123');
     }

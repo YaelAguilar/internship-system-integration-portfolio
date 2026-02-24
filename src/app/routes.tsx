@@ -2,8 +2,6 @@ import React from "react";
 import { createBrowserRouter, Navigate } from 'react-router';
 import { LoginPage } from './components/LoginPage';
 import { DashboardLayout } from './components/DashboardLayout';
-import { Dashboard } from './components/Dashboard';
-import { PracticasPage } from './components/PracticasPage';
 import { PracticaDetail } from './components/PracticaDetail';
 import { PasantiasPage } from './components/PasantiasPage';
 import { NuevaPasantiaPage } from './components/NuevaPasantiaPage';
@@ -21,16 +19,6 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <LoginPage />,
-  },
-  {
-    path: '/dashboard',
-    element: (
-      <ProtectedRoute>
-        <DashboardLayout>
-          <Dashboard />
-        </DashboardLayout>
-      </ProtectedRoute>
-    ),
   },
   {
     path: '/pasantias',
@@ -54,26 +42,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '/pasantias/:id',
-    element: (
-      <ProtectedRoute>
-        <DashboardLayout>
-          <PracticaDetail />
-        </DashboardLayout>
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/practicas',
-    element: (
-      <ProtectedRoute>
-        <DashboardLayout>
-          <PracticasPage />
-        </DashboardLayout>
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/practicas/:id',
     element: (
       <ProtectedRoute>
         <DashboardLayout>
