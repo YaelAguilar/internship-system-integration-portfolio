@@ -24,6 +24,9 @@ export function PasantiasPage() {
     pasantias = mockPracticas.filter(p => p.estudianteId === user.id);
   } else if (user.rol === 'profesor') {
     pasantias = mockPracticas.filter(p => p.supervisorId === user.id);
+  } else if (user.rol === 'coordinador') {
+    // Coordinadores ven todas las pasantías
+    pasantias = mockPracticas;
   }
 
   // Aplicar filtros
@@ -82,7 +85,9 @@ export function PasantiasPage() {
         <p className="text-gray-600 dark:text-gray-400">
           {user.rol === 'alumno' 
             ? 'Gestiona tus pasantías profesionales' 
-            : 'Gestiona las pasantías que supervisas'}
+            : user.rol === 'profesor'
+            ? 'Gestiona las pasantías que supervisas'
+            : 'Gestiona las pasantías del sistema'}
         </p>
       </div>
 

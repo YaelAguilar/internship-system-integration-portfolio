@@ -39,10 +39,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['coordinador', 'empresa'] },
-    { path: '/pasantias', label: 'Pasantías', icon: Briefcase, roles: ['alumno', 'profesor'] },
+    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['empresa'] },
+    { path: '/pasantias', label: 'Pasantías', icon: Briefcase, roles: ['alumno', 'profesor', 'coordinador'] },
     { path: '/pasantias/nueva', label: 'Nueva Pasantía', icon: Plus, roles: ['alumno'] },
-    { path: '/practicas', label: 'Prácticas', icon: Briefcase, roles: ['coordinador', 'empresa'] },
+    { path: '/practicas', label: 'Prácticas', icon: Briefcase, roles: ['empresa'] },
     { path: '/periodos', label: 'Períodos', icon: Calendar, roles: ['coordinador'] },
   ];
 

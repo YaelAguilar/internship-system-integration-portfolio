@@ -8,7 +8,6 @@ import {
   User,
   Calendar,
   MapPin,
-  Edit,
   MessageSquare,
   CheckCircle,
   XCircle,
@@ -128,17 +127,11 @@ export function PracticaDetail() {
             </div>
             <p className="text-gray-600 dark:text-gray-400">{practica.estudianteNombre}</p>
           </div>
-        {user.rol === 'coordinador' && (
-          <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors">
-            <Edit className="w-4 h-4" />
-            <span>Editar</span>
-          </button>
-        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Comentarios y Votos - Visible para alumnos y profesores */}
-          {(user.rol === 'alumno' || user.rol === 'profesor') && (
+          {/* Comentarios y Votos - Visible para alumnos, profesores y coordinadores */}
+          {(user.rol === 'alumno' || user.rol === 'profesor' || user.rol === 'coordinador') && (
             <div className="lg:col-span-1">
               <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
                 <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Comentarios y Votos</h2>
@@ -269,7 +262,7 @@ export function PracticaDetail() {
           )}
 
           {/* Detalles Generales */}
-          <div className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 ${(user.rol === 'alumno' || user.rol === 'profesor') ? 'lg:col-span-2' : ''}`}>
+          <div className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 ${(user.rol === 'alumno' || user.rol === 'profesor' || user.rol === 'coordinador') ? 'lg:col-span-2' : ''}`}>
             <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Información General</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-3">

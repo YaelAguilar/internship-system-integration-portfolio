@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
 import { mockPeriodos } from '../utils/mockData';
 import { Calendar, Plus, CheckCircle2, Clock, Edit, Trash2 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
 
 export function PeriodosPage() {
   const [periodos] = useState(mockPeriodos);
+  const [nuevoPeriodoOpen, setNuevoPeriodoOpen] = useState(false);
+  const [editarPeriodoOpen, setEditarPeriodoOpen] = useState<string | null>(null);
 
   return (
     <div className="space-y-6">
@@ -13,10 +24,70 @@ export function PeriodosPage() {
           <h1 className="font-bold text-gray-900 dark:text-gray-100 mb-1">Períodos Académicos</h1>
           <p className="text-gray-600 dark:text-gray-400">Administra los períodos para prácticas profesionales</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors">
-          <Plus className="w-5 h-5" />
-          <span>Nuevo Período</span>
-        </button>
+        <Dialog open={nuevoPeriodoOpen} onOpenChange={setNuevoPeriodoOpen}>
+          <DialogTrigger asChild>
+            <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors">
+              <Plus className="w-5 h-5" />
+              <span>Nuevo Período</span>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="bg-white dark:bg-gray-800">
+            <DialogHeader>
+              <DialogTitle className="text-gray-900 dark:text-gray-100">Nuevo Período Académico</DialogTitle>
+              <DialogDescription className="text-gray-600 dark:text-gray-400">
+                Crea un nuevo período académico para las prácticas profesionales
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Nombre del Período
+                </label>
+                <input
+                  type="text"
+                  placeholder="Ej: 2025-1"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Fecha de Inicio
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Fecha de Fin
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  />
+                </div>
+              </div>
+            </div>
+            <DialogFooter>
+              <button
+                type="button"
+                onClick={() => setNuevoPeriodoOpen(false)}
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => setNuevoPeriodoOpen(false)}
+                className="px-4 py-2 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors"
+              >
+                Crear Período
+              </button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Lista de Períodos */}
@@ -93,10 +164,82 @@ export function PeriodosPage() {
 
             {/* Acciones */}
             <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">
-                <Edit className="w-4 h-4" />
-                <span>Editar</span>
-              </button>
+              <Dialog open={editarPeriodoOpen === periodo.id} onOpenChange={(open) => setEditarPeriodoOpen(open ? periodo.id : null)}>
+                <DialogTrigger asChild>
+                  <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">
+                    <Edit className="w-4 h-4" />
+                    <span>Editar</span>
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="bg-white dark:bg-gray-800">
+                  <DialogHeader>
+                    <DialogTitle className="text-gray-900 dark:text-gray-100">Editar Período Académico</DialogTitle>
+                    <DialogDescription className="text-gray-600 dark:text-gray-400">
+                      Modifica la información del período académico
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Nombre del Período
+                      </label>
+                      <input
+                        type="text"
+                        defaultValue={periodo.nombre}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Fecha de Inicio
+                        </label>
+                        <input
+                          type="date"
+                          defaultValue={periodo.fechaInicio}
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Fecha de Fin
+                        </label>
+                        <input
+                          type="date"
+                          defaultValue={periodo.fechaFin}
+                          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <input
+                          type="checkbox"
+                          defaultChecked={periodo.activo}
+                          className="w-4 h-4 text-indigo-600 dark:text-green-600 border-gray-300 dark:border-gray-600 rounded focus:ring-indigo-500 dark:focus:ring-green-500"
+                        />
+                        <span>Período Activo</span>
+                      </label>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <button
+                      type="button"
+                      onClick={() => setEditarPeriodoOpen(null)}
+                      className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditarPeriodoOpen(null)}
+                      className="px-4 py-2 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors"
+                    >
+                      Guardar Cambios
+                    </button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
               {!periodo.activo && periodo.totalPracticas === 0 && (
                 <button className="p-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors">
                   <Trash2 className="w-4 h-4" />
@@ -108,12 +251,12 @@ export function PeriodosPage() {
       </div>
 
       {/* Info adicional */}
-      <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+      <div className="bg-indigo-50 dark:bg-green-900/20 border border-indigo-200 dark:border-green-800 rounded-xl p-4">
         <div className="flex gap-3">
-          <Calendar className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
+          <Calendar className="w-5 h-5 text-indigo-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="font-medium text-indigo-900 mb-1">Control Automático de Períodos</p>
-            <p className="text-sm text-indigo-700">
+            <p className="font-medium text-indigo-900 dark:text-green-200 mb-1">Control Automático de Períodos</p>
+            <p className="text-sm text-indigo-700 dark:text-green-300">
               Los períodos académicos se actualizan automáticamente según las fechas configuradas.
               Solo puede haber un período activo a la vez.
             </p>
