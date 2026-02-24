@@ -52,6 +52,46 @@ export interface Documento {
   url: string;
 }
 
+export interface Voto {
+  id: string;
+  practicaId: string;
+  usuarioId: string;
+  usuarioNombre: string;
+  usuarioRol: UserRole;
+  tipo: 'aprobado' | 'rechazado' | 'actualizar';
+  fecha: string;
+}
+
+export interface Comentario {
+  id: string;
+  practicaId: string;
+  usuarioId: string;
+  usuarioNombre: string;
+  usuarioRol: UserRole;
+  contenido: string;
+  fecha: string;
+}
+
+export interface Voto {
+  id: string;
+  practicaId: string;
+  usuarioId: string;
+  usuarioNombre: string;
+  usuarioRol: UserRole;
+  tipo: 'aprobado' | 'rechazado' | 'actualizar';
+  fecha: string;
+}
+
+export interface Comentario {
+  id: string;
+  practicaId: string;
+  usuarioId: string;
+  usuarioNombre: string;
+  usuarioRol: UserRole;
+  contenido: string;
+  fecha: string;
+}
+
 export const mockUsers: User[] = [
   {
     id: '1',
@@ -267,5 +307,56 @@ export const mockDocumentos: Documento[] = [
     practicaId: '1',
     fechaGeneracion: '2025-07-15',
     url: '#',
+  },
+];
+
+export const mockVotos: Voto[] = [
+  {
+    id: '1',
+    practicaId: '1',
+    usuarioId: '2',
+    usuarioNombre: 'María García',
+    usuarioRol: 'profesor',
+    tipo: 'aprobado',
+    fecha: '2025-08-20',
+  },
+  {
+    id: '2',
+    practicaId: '1',
+    usuarioId: '3',
+    usuarioNombre: 'Carlos López',
+    usuarioRol: 'coordinador',
+    tipo: 'actualizar',
+    fecha: '2025-08-18',
+  },
+];
+
+export const mockComentarios: Comentario[] = [
+  {
+    id: '1',
+    practicaId: '1',
+    usuarioId: '2',
+    usuarioNombre: 'María García',
+    usuarioRol: 'profesor',
+    contenido: 'La propuesta de pasantía es muy interesante y se alinea con los objetivos académicos del estudiante. Recomiendo su aprobación.',
+    fecha: '2025-08-20T10:30:00',
+  },
+  {
+    id: '2',
+    practicaId: '1',
+    usuarioId: '3',
+    usuarioNombre: 'Carlos López',
+    usuarioRol: 'coordinador',
+    contenido: 'Solicito que se actualice la descripción de la pasantía para incluir más detalles sobre las responsabilidades específicas del estudiante.',
+    fecha: '2025-08-18T14:15:00',
+  },
+  {
+    id: '3',
+    practicaId: '1',
+    usuarioId: '2',
+    usuarioNombre: 'María García',
+    usuarioRol: 'profesor',
+    contenido: 'El estudiante ha demostrado un buen desempeño en las materias relacionadas. La empresa propuesta tiene una excelente reputación en el sector.',
+    fecha: '2025-08-19T09:45:00',
   },
 ];

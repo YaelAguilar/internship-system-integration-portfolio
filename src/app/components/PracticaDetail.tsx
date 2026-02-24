@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from 'react-router';
-import { mockPracticas } from '../utils/mockData';
+import { mockPracticas, mockVotos, mockComentarios } from '../utils/mockData';
 import { getCurrentUser } from '../utils/auth';
 import {
   ArrowLeft,
@@ -9,6 +9,10 @@ import {
   Calendar,
   MapPin,
   Edit,
+  MessageSquare,
+  CheckCircle,
+  XCircle,
+  RefreshCw,
 } from 'lucide-react';
 
 export function PracticaDetail() {
@@ -17,6 +21,10 @@ export function PracticaDetail() {
   const user = getCurrentUser();
 
   const practica = mockPracticas.find(p => p.id === id);
+  const votos = mockVotos.filter(v => v.practicaId === id);
+  const comentarios = mockComentarios.filter(c => c.practicaId === id).sort((a, b) => 
+    new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
+  );
 
   const getBackPath = () => {
     if (user?.rol === 'alumno') {
@@ -106,9 +114,114 @@ export function PracticaDetail() {
         )}
       </div>
 
-      <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Comentarios y Votos - Solo visible para alumnos */}
+          {user.rol === 'alumno' && (
+            <div className="lg:col-span-1">
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
+                <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Comentarios y Votos</h2>
+                
+                {/* Votos */}
+                {votos.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Votos de Evaluación</h3>
+                    <div className="space-y-2">
+                      {votos.map((voto) => (
+                        <div
+                          key={voto.id}
+                          className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
+                        >
+                          {voto.tipo === 'aprobado' && (
+                            <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                          )}
+                          {voto.tipo === 'rechazado' && (
+                            <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
+                          )}
+                          {voto.tipo === 'actualizar' && (
+                            <RefreshCw className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <p className="font-medium text-gray-900 dark:text-gray-100 text-sm">
+                                {voto.usuarioNombre}
+                              </p>
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                ({voto.usuarioRol === 'profesor' ? 'Profesor' : voto.usuarioRol === 'coordinador' ? 'Coordinador' : voto.usuarioRol})
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                              {voto.tipo === 'aprobado' && 'Aprobado'}
+                              {voto.tipo === 'rechazado' && 'Rechazado'}
+                              {voto.tipo === 'actualizar' && 'Solicita Actualización'}
+                            </p>
+                          </div>
+                          <span className="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
+                            {new Date(voto.fecha).toLocaleDateString('es-ES', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                            })}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Comentarios */}
+                {comentarios.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4" />
+                      Comentarios ({comentarios.length})
+                    </h3>
+                    <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                      {comentarios.map((comentario) => (
+                        <div
+                          key={comentario.id}
+                          className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border-l-4 border-indigo-500 dark:border-green-500"
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <User className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+                              <p className="font-medium text-gray-900 dark:text-gray-100 text-sm">
+                                {comentario.usuarioNombre}
+                              </p>
+                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                                ({comentario.usuarioRol === 'profesor' ? 'Profesor' : comentario.usuarioRol === 'coordinador' ? 'Coordinador' : comentario.usuarioRol})
+                              </span>
+                            </div>
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                              {new Date(comentario.fecha).toLocaleDateString('es-ES', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                            {comentario.contenido}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {votos.length === 0 && comentarios.length === 0 && (
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                    <MessageSquare className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
+                    <p>No hay votos ni comentarios aún</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Detalles Generales */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+          <div className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 ${user.rol === 'alumno' ? 'lg:col-span-2' : ''}`}>
             <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Información General</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-3">
