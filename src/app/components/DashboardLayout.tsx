@@ -66,7 +66,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="flex items-center justify-center w-10 h-10 bg-indigo-600 dark:bg-green-600 rounded-lg">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
-            <span className="font-bold text-gray-900 dark:text-gray-100">ConectaUP</span>
+            <span className="font-bold text-gray-900 dark:text-gray-100">Conecta</span>
           </div>
 
           {/* User Info */}
@@ -143,7 +143,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="flex items-center justify-center w-8 h-8 bg-indigo-600 dark:bg-green-600 rounded-lg">
               <GraduationCap className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-gray-900 dark:text-gray-100">ConectaUP</span>
+            <span className="font-bold text-gray-900 dark:text-gray-100">Conecta</span>
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

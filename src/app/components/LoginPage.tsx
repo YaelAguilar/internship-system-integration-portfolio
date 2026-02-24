@@ -36,7 +36,7 @@ export function LoginPage() {
           <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 dark:bg-green-600 rounded-full mb-3 sm:mb-4">
             <GraduationCap className="w-7 h-7 sm:w-9 sm:h-9 text-white" />
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">ConectaUP</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Conecta</h1>
           <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Plataforma de Gestión de Prácticas Profesionales</p>
         </div>
 
