@@ -153,7 +153,7 @@ export function PasantiasPage() {
 
               {/* Detalles */}
               <div className="space-y-2 mb-4">
-                {user.rol === 'profesor' && (
+                {(user.rol === 'profesor' || user.rol === 'coordinador') && (
                   <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <User className="w-4 h-4 flex-shrink-0" />
                     <span className="truncate">Estudiante: {pasantia.estudianteNombre}</span>

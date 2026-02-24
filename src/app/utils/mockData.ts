@@ -43,35 +43,6 @@ export interface PeriodoAcademico {
   totalPracticas: number;
 }
 
-export interface Documento {
-  id: string;
-  nombre: string;
-  tipo: 'carta_presentacion' | 'informe_final' | 'evaluacion' | 'convenio';
-  practicaId: string;
-  fechaGeneracion: string;
-  url: string;
-}
-
-export interface Voto {
-  id: string;
-  practicaId: string;
-  usuarioId: string;
-  usuarioNombre: string;
-  usuarioRol: UserRole;
-  tipo: 'aprobado' | 'rechazado' | 'actualizar';
-  fecha: string;
-}
-
-export interface Comentario {
-  id: string;
-  practicaId: string;
-  usuarioId: string;
-  usuarioNombre: string;
-  usuarioRol: UserRole;
-  contenido: string;
-  fecha: string;
-}
-
 export interface Voto {
   id: string;
   practicaId: string;
@@ -272,41 +243,6 @@ export const mockPracticas: PracticaProfesional[] = [
     estado: 'rechazado',
     area: 'Ingeniería de Sistemas',
     descripcion: 'Desarrollo de modelos de machine learning y procesamiento de datos con Python y TensorFlow',
-  },
-];
-
-export const mockDocumentos: Documento[] = [
-  {
-    id: '1',
-    nombre: 'Carta de Presentación',
-    tipo: 'carta_presentacion',
-    practicaId: '1',
-    fechaGeneracion: '2025-08-10',
-    url: '#',
-  },
-  {
-    id: '2',
-    nombre: 'Informe Final - Juan Pérez',
-    tipo: 'informe_final',
-    practicaId: '1',
-    fechaGeneracion: '2025-12-15',
-    url: '#',
-  },
-  {
-    id: '3',
-    nombre: 'Evaluación de Desempeño',
-    tipo: 'evaluacion',
-    practicaId: '2',
-    fechaGeneracion: '2025-11-25',
-    url: '#',
-  },
-  {
-    id: '4',
-    nombre: 'Convenio Marco - Tech Solutions',
-    tipo: 'convenio',
-    practicaId: '1',
-    fechaGeneracion: '2025-07-15',
-    url: '#',
   },
 ];
 
