@@ -29,15 +29,15 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 sm:p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md p-6 sm:p-8">
         {/* Logo y Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 dark:bg-green-600 rounded-full mb-4">
-            <GraduationCap className="w-9 h-9 text-white" />
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-indigo-600 dark:bg-green-600 rounded-full mb-3 sm:mb-4">
+            <GraduationCap className="w-7 h-7 sm:w-9 sm:h-9 text-white" />
           </div>
-          <h1 className="font-bold text-gray-900 dark:text-gray-100 mb-2">ConectaUP</h1>
-          <p className="text-gray-600 dark:text-gray-400">Plataforma de Gestión de Prácticas Profesionales</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">ConectaUP</h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Plataforma de Gestión de Prácticas Profesionales</p>
         </div>
 
         {/* Formulario */}
@@ -53,7 +53,7 @@ export function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                className="w-full pl-10 pr-4 py-2.5 sm:py-2 text-base sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="usuario@ejemplo.com"
                 required
               />
@@ -71,7 +71,7 @@ export function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                className="w-full pl-10 pr-4 py-2.5 sm:py-2 text-base sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 placeholder="••••••••"
                 required
               />
@@ -87,7 +87,7 @@ export function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 dark:bg-green-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors"
+            className="w-full bg-indigo-600 dark:bg-green-600 text-white py-3 sm:py-2.5 rounded-lg font-medium hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors text-base sm:text-sm"
           >
             Iniciar Sesión
           </button>

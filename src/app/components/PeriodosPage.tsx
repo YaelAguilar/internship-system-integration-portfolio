@@ -31,7 +31,7 @@ export function PeriodosPage() {
               <span>Nuevo Período</span>
             </button>
           </DialogTrigger>
-          <DialogContent className="bg-white dark:bg-gray-800">
+          <DialogContent className="bg-white dark:bg-gray-800 max-w-[95vw] sm:max-w-lg">
             <DialogHeader>
               <DialogTitle className="text-gray-900 dark:text-gray-100">Nuevo Período Académico</DialogTitle>
               <DialogDescription className="text-gray-600 dark:text-gray-400">
@@ -49,7 +49,7 @@ export function PeriodosPage() {
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Fecha de Inicio
@@ -91,11 +91,11 @@ export function PeriodosPage() {
       </div>
 
       {/* Lista de Períodos */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {periodos.map((periodo) => (
           <div
             key={periodo.id}
-            className={`bg-white dark:bg-gray-800 rounded-xl border-2 p-6 transition-all ${
+            className={`bg-white dark:bg-gray-800 rounded-xl border-2 p-4 sm:p-6 transition-all ${
               periodo.activo
                 ? 'border-indigo-500 dark:border-green-500 shadow-lg'
                 : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
@@ -163,15 +163,15 @@ export function PeriodosPage() {
             </div>
 
             {/* Acciones */}
-            <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col sm:flex-row gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
               <Dialog open={editarPeriodoOpen === periodo.id} onOpenChange={(open) => setEditarPeriodoOpen(open ? periodo.id : null)}>
                 <DialogTrigger asChild>
-                  <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">
-                    <Edit className="w-4 h-4" />
+                  <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <Edit className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span>Editar</span>
                   </button>
                 </DialogTrigger>
-                <DialogContent className="bg-white dark:bg-gray-800">
+                <DialogContent className="bg-white dark:bg-gray-800 max-w-[95vw] sm:max-w-lg">
                   <DialogHeader>
                     <DialogTitle className="text-gray-900 dark:text-gray-100">Editar Período Académico</DialogTitle>
                     <DialogDescription className="text-gray-600 dark:text-gray-400">
@@ -189,7 +189,7 @@ export function PeriodosPage() {
                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Fecha de Inicio
@@ -241,8 +241,8 @@ export function PeriodosPage() {
                 </DialogContent>
               </Dialog>
               {!periodo.activo && periodo.totalPracticas === 0 && (
-                <button className="p-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors">
-                  <Trash2 className="w-4 h-4" />
+                <button className="w-full sm:w-auto flex items-center justify-center p-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors">
+                  <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               )}
             </div>

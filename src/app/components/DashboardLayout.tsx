@@ -138,7 +138,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Mobile Header */}
       <div className="md:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3">
           <div className="flex items-center gap-2">
             <div className="flex items-center justify-center w-8 h-8 bg-indigo-600 dark:bg-green-600 rounded-lg">
               <GraduationCap className="w-5 h-5 text-white" />
@@ -155,7 +155,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="border-t border-gray-200 dark:border-gray-700 px-2 py-3 space-y-1">
+          <div className="border-t border-gray-200 dark:border-gray-700 px-2 py-2 sm:py-3 space-y-1 max-h-[calc(100vh-80px)] overflow-y-auto">
             <div className="px-3 py-2 mb-2">
               <p className="font-medium text-gray-900 dark:text-gray-100">{user.nombre}</p>
               <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${getRoleBadgeColor(user.rol)}`}>
@@ -211,7 +211,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Main Content */}
       <main className="md:pl-64">
-        <div className="px-4 py-6 md:px-8">
+        <div className="px-3 sm:px-4 py-4 sm:py-6 md:px-8">
           {children}
         </div>
       </main>

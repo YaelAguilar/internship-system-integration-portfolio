@@ -108,30 +108,30 @@ export function PracticaDetail() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-start sm:items-center gap-2 sm:gap-4">
         <button
           onClick={() => navigate(getBackPath())}
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
         >
           <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
         </button>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-1">
-              <h1 className="font-bold text-gray-900 dark:text-gray-100">Detalle de Práctica</h1>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getEstadoBadge(practica.estado)} dark:${getEstadoBadgeDark(practica.estado)}`}>
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
+              <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">Detalle de Práctica</h1>
+              <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getEstadoBadge(practica.estado)} dark:${getEstadoBadgeDark(practica.estado)}`}>
                 {getEstadoLabel(practica.estado)}
               </span>
             </div>
-            <p className="text-gray-600 dark:text-gray-400">{practica.estudianteNombre}</p>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 truncate">{practica.estudianteNombre}</p>
           </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Comentarios y Votos - Visible para alumnos, profesores y coordinadores */}
           {(user.rol === 'alumno' || user.rol === 'profesor' || user.rol === 'coordinador') && (
-            <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
-                <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Comentarios y Votos</h2>
+            <div className="lg:col-span-1 order-2 lg:order-1">
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 lg:sticky lg:top-6">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Comentarios y Votos</h2>
                 
                 {/* Votos */}
                 {votos.length > 0 && (
@@ -187,7 +187,7 @@ export function PracticaDetail() {
                       <MessageSquare className="w-4 h-4" />
                       Comentarios ({comentarios.length})
                     </h3>
-                    <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                    <div className="space-y-4 max-h-[400px] sm:max-h-[600px] overflow-y-auto pr-2">
                       {comentarios.map((comentario) => (
                         <div
                           key={comentario.id}
@@ -241,12 +241,12 @@ export function PracticaDetail() {
                         onChange={(e) => setNuevoComentario(e.target.value)}
                         placeholder="Escribe tu comentario aquí..."
                         rows={4}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 resize-none"
+                        className="w-full px-4 py-2.5 sm:py-2 text-base sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 resize-none"
                         required
                       />
                       <button
                         type="submit"
-                        className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 sm:py-2 text-base sm:text-sm bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors"
                       >
                         <Send className="w-4 h-4" />
                         <span>Enviar Comentario</span>
@@ -259,9 +259,9 @@ export function PracticaDetail() {
           )}
 
           {/* Detalles Generales */}
-          <div className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 ${(user.rol === 'alumno' || user.rol === 'profesor' || user.rol === 'coordinador') ? 'lg:col-span-2' : ''}`}>
-            <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Información General</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 order-1 lg:order-2 ${(user.rol === 'alumno' || user.rol === 'profesor' || user.rol === 'coordinador') ? 'lg:col-span-2' : ''}`}>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Información General</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div className="space-y-3">
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Estudiante</p>
@@ -328,7 +328,7 @@ export function PracticaDetail() {
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Descripción General</p>
                   <p className="text-gray-900 dark:text-gray-100 leading-relaxed">{practica.descripcion}</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                   <div>
                     <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Objetivos de la Pasantía</p>
                     <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
