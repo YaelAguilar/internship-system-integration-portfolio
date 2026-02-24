@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from 'react-router';
 import { mockPracticas, mockVotos, mockComentarios } from '../utils/mockData';
 import { getCurrentUser } from '../utils/auth';
@@ -13,18 +13,40 @@ import {
   CheckCircle,
   XCircle,
   RefreshCw,
+  Send,
 } from 'lucide-react';
 
 export function PracticaDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const user = getCurrentUser();
+  const [nuevoComentario, setNuevoComentario] = useState('');
+  const [comentarios, setComentarios] = useState(
+    mockComentarios.filter(c => c.practicaId === id).sort((a, b) => 
+      new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
+    )
+  );
 
   const practica = mockPracticas.find(p => p.id === id);
   const votos = mockVotos.filter(v => v.practicaId === id);
-  const comentarios = mockComentarios.filter(c => c.practicaId === id).sort((a, b) => 
-    new Date(b.fecha).getTime() - new Date(a.fecha).getTime()
-  );
+
+  const handleEnviarComentario = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nuevoComentario.trim() || !user || !id) return;
+
+    const comentarioNuevo = {
+      id: `comentario-${Date.now()}`,
+      practicaId: id,
+      usuarioId: user.id,
+      usuarioNombre: user.nombre,
+      usuarioRol: user.rol,
+      contenido: nuevoComentario.trim(),
+      fecha: new Date().toISOString(),
+    };
+
+    setComentarios([comentarioNuevo, ...comentarios]);
+    setNuevoComentario('');
+  };
 
   const getBackPath = () => {
     if (user?.rol === 'alumno') {
@@ -106,7 +128,7 @@ export function PracticaDetail() {
             </div>
             <p className="text-gray-600 dark:text-gray-400">{practica.estudianteNombre}</p>
           </div>
-        {(user.rol === 'coordinador' || user.rol === 'profesor') && (
+        {user.rol === 'coordinador' && (
           <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors">
             <Edit className="w-4 h-4" />
             <span>Editar</span>
@@ -115,8 +137,8 @@ export function PracticaDetail() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Comentarios y Votos - Solo visible para alumnos */}
-          {user.rol === 'alumno' && (
+          {/* Comentarios y Votos - Visible para alumnos y profesores */}
+          {(user.rol === 'alumno' || user.rol === 'profesor') && (
             <div className="lg:col-span-1">
               <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
                 <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Comentarios y Votos</h2>
@@ -216,12 +238,38 @@ export function PracticaDetail() {
                     <p>No hay votos ni comentarios aún</p>
                   </div>
                 )}
+
+                {/* Formulario de comentarios - Solo para profesores */}
+                {user.rol === 'profesor' && (
+                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                      Añadir Comentario
+                    </h3>
+                    <form onSubmit={handleEnviarComentario} className="space-y-3">
+                      <textarea
+                        value={nuevoComentario}
+                        onChange={(e) => setNuevoComentario(e.target.value)}
+                        placeholder="Escribe tu comentario aquí..."
+                        rows={4}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 resize-none"
+                        required
+                      />
+                      <button
+                        type="submit"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-indigo-600 dark:bg-green-600 text-white rounded-lg hover:bg-indigo-700 dark:hover:bg-green-700 transition-colors"
+                      >
+                        <Send className="w-4 h-4" />
+                        <span>Enviar Comentario</span>
+                      </button>
+                    </form>
+                  </div>
+                )}
               </div>
             </div>
           )}
 
           {/* Detalles Generales */}
-          <div className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 ${user.rol === 'alumno' ? 'lg:col-span-2' : ''}`}>
+          <div className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 ${(user.rol === 'alumno' || user.rol === 'profesor') ? 'lg:col-span-2' : ''}`}>
             <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Información General</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-3">

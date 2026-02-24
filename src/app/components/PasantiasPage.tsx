@@ -18,12 +18,18 @@ export function PasantiasPage() {
 
   if (!user) return null;
 
-  // Filtrar solo las pasantías del alumno
-  let pasantias = mockPracticas.filter(p => p.estudianteId === user.id);
+  // Filtrar pasantías según el rol
+  let pasantias = [];
+  if (user.rol === 'alumno') {
+    pasantias = mockPracticas.filter(p => p.estudianteId === user.id);
+  } else if (user.rol === 'profesor') {
+    pasantias = mockPracticas.filter(p => p.supervisorId === user.id);
+  }
 
   // Aplicar filtros
   if (searchTerm) {
     pasantias = pasantias.filter(p =>
+      p.estudianteNombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.empresaNombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
       p.area.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -70,8 +76,14 @@ export function PasantiasPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="font-bold text-gray-900 dark:text-gray-100 mb-1">Mis Pasantías</h1>
-        <p className="text-gray-600 dark:text-gray-400">Gestiona tus pasantías profesionales</p>
+        <h1 className="font-bold text-gray-900 dark:text-gray-100 mb-1">
+          {user.rol === 'alumno' ? 'Mis Pasantías' : 'Pasantías'}
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          {user.rol === 'alumno' 
+            ? 'Gestiona tus pasantías profesionales' 
+            : 'Gestiona las pasantías que supervisas'}
+        </p>
       </div>
 
       {/* Filtros */}
@@ -81,7 +93,7 @@ export function PasantiasPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
-              placeholder="Buscar por empresa o área..."
+              placeholder={user.rol === 'alumno' ? 'Buscar por empresa o área...' : 'Buscar por estudiante, empresa o área...'}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-green-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
@@ -136,10 +148,18 @@ export function PasantiasPage() {
 
               {/* Detalles */}
               <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                  <User className="w-4 h-4 flex-shrink-0" />
-                  <span className="truncate">Supervisor: {pasantia.supervisorNombre}</span>
-                </div>
+                {user.rol === 'profesor' && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <User className="w-4 h-4 flex-shrink-0" />
+                    <span className="truncate">Estudiante: {pasantia.estudianteNombre}</span>
+                  </div>
+                )}
+                {user.rol === 'alumno' && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <User className="w-4 h-4 flex-shrink-0" />
+                    <span className="truncate">Supervisor: {pasantia.supervisorNombre}</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                   <Calendar className="w-4 h-4 flex-shrink-0" />
                   <span>

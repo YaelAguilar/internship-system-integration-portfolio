@@ -39,11 +39,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['profesor', 'coordinador', 'empresa'] },
-    { path: '/pasantias', label: 'Pasantías', icon: Briefcase, roles: ['alumno'] },
+    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['coordinador', 'empresa'] },
+    { path: '/pasantias', label: 'Pasantías', icon: Briefcase, roles: ['alumno', 'profesor'] },
     { path: '/pasantias/nueva', label: 'Nueva Pasantía', icon: Plus, roles: ['alumno'] },
-    { path: '/practicas', label: 'Prácticas', icon: Briefcase, roles: ['profesor', 'coordinador', 'empresa'] },
-    { path: '/periodos', label: 'Períodos', icon: Calendar, roles: ['coordinador', 'profesor'] },
+    { path: '/practicas', label: 'Prácticas', icon: Briefcase, roles: ['coordinador', 'empresa'] },
+    { path: '/periodos', label: 'Períodos', icon: Calendar, roles: ['coordinador'] },
   ];
 
   const filteredNavItems = navItems.filter(item => item.roles.includes(user.rol));

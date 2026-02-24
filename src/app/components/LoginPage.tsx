@@ -17,7 +17,7 @@ export function LoginPage() {
     
     if (user) {
       // Redirigir según el rol del usuario
-      if (user.rol === 'alumno') {
+      if (user.rol === 'alumno' || user.rol === 'profesor') {
         navigate('/pasantias');
       } else {
         navigate('/dashboard');
