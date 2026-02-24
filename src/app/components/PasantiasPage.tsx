@@ -9,7 +9,6 @@ import {
   Building2,
   Calendar,
   User,
-  TrendingUp,
 } from 'lucide-react';
 
 export function PasantiasPage() {
@@ -36,13 +35,13 @@ export function PasantiasPage() {
 
   const getEstadoBadge = (estado: string) => {
     switch (estado) {
-      case 'en_progreso':
-        return 'bg-indigo-100 text-indigo-700 dark:bg-green-900/30 dark:text-green-400';
-      case 'completada':
-        return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
       case 'pendiente':
         return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
-      case 'cancelada':
+      case 'actualizar':
+        return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
+      case 'aprobado':
+        return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
+      case 'rechazado':
         return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
       default:
         return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300';
@@ -50,15 +49,21 @@ export function PasantiasPage() {
   };
 
   const getEstadoLabel = (estado: string) => {
-    return estado.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const labels: Record<string, string> = {
+      'pendiente': 'Pendiente',
+      'actualizar': 'Actualizar',
+      'aprobado': 'Aprobado',
+      'rechazado': 'Rechazado',
+    };
+    return labels[estado] || estado.charAt(0).toUpperCase() + estado.slice(1);
   };
 
   const estadoOptions = [
     { value: 'todos', label: 'Todos los estados' },
     { value: 'pendiente', label: 'Pendiente' },
-    { value: 'en_progreso', label: 'En Progreso' },
-    { value: 'completada', label: 'Completada' },
-    { value: 'cancelada', label: 'Cancelada' },
+    { value: 'actualizar', label: 'Actualizar' },
+    { value: 'aprobado', label: 'Aprobado' },
+    { value: 'rechazado', label: 'Rechazado' },
   ];
 
   return (
@@ -142,30 +147,6 @@ export function PasantiasPage() {
                     {' '}{new Date(pasantia.fechaFin).toLocaleDateString('es-ES')}
                   </span>
                 </div>
-              </div>
-
-              {/* Progreso */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                    <TrendingUp className="w-4 h-4" />
-                    <span>Progreso</span>
-                  </div>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">
-                    {pasantia.horasCompletadas} / {pasantia.horasRequeridas} hrs
-                  </span>
-                </div>
-                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-indigo-600 dark:bg-green-600 rounded-full transition-all"
-                    style={{
-                      width: `${Math.min((pasantia.horasCompletadas / pasantia.horasRequeridas) * 100, 100)}%`,
-                    }}
-                  />
-                </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 text-right">
-                  {Math.round((pasantia.horasCompletadas / pasantia.horasRequeridas) * 100)}% completado
-                </p>
               </div>
             </Link>
           ))

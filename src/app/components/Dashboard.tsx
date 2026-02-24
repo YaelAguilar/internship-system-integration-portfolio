@@ -6,7 +6,6 @@ import {
   Calendar,
   CheckCircle2,
   Clock,
-  TrendingUp,
   Users,
   FileText,
   AlertCircle,
@@ -23,40 +22,29 @@ export function Dashboard() {
   const getStats = () => {
     if (user.rol === 'alumno') {
       const misPracticas = mockPracticas.filter(p => p.estudianteId === user.id);
-      const practicaActual = misPracticas.find(p => p.estado === 'en_progreso');
+      const aprobadas = misPracticas.filter(p => p.estado === 'aprobado').length;
       
       return [
         {
-          label: 'Mis Prácticas',
+          label: 'Mis Pasantías',
           value: misPracticas.length,
           icon: Briefcase,
           color: 'bg-indigo-50 text-indigo-600',
         },
         {
-          label: 'Horas Completadas',
-          value: practicaActual ? practicaActual.horasCompletadas : 0,
-          icon: Clock,
-          color: 'bg-green-50 text-green-600',
-        },
-        {
-          label: 'Horas Totales',
-          value: practicaActual ? practicaActual.horasRequeridas : 0,
-          icon: TrendingUp,
-          color: 'bg-purple-50 text-purple-600',
-        },
-        {
-          label: 'Estado',
-          value: practicaActual ? 'En Progreso' : 'Sin Asignar',
+          label: 'Aprobadas',
+          value: aprobadas,
           icon: CheckCircle2,
-          color: 'bg-orange-50 text-orange-600',
+          color: 'bg-green-50 text-green-600',
         },
       ];
     }
     
     if (user.rol === 'profesor') {
       const practicasSupervisadas = mockPracticas.filter(p => p.supervisorId === user.id);
-      const enProgreso = practicasSupervisadas.filter(p => p.estado === 'en_progreso').length;
-      const completadas = practicasSupervisadas.filter(p => p.estado === 'completada').length;
+      const pendientes = practicasSupervisadas.filter(p => p.estado === 'pendiente').length;
+      const aprobadas = practicasSupervisadas.filter(p => p.estado === 'aprobado').length;
+      const rechazadas = practicasSupervisadas.filter(p => p.estado === 'rechazado').length;
       
       return [
         {
@@ -66,20 +54,20 @@ export function Dashboard() {
           color: 'bg-indigo-50 text-indigo-600',
         },
         {
-          label: 'En Progreso',
-          value: enProgreso,
+          label: 'Pendientes',
+          value: pendientes,
           icon: Clock,
-          color: 'bg-orange-50 text-orange-600',
+          color: 'bg-yellow-50 text-yellow-600',
         },
         {
-          label: 'Completadas',
-          value: completadas,
+          label: 'Aprobadas',
+          value: aprobadas,
           icon: CheckCircle2,
           color: 'bg-green-50 text-green-600',
         },
         {
-          label: 'Pendientes',
-          value: practicasSupervisadas.filter(p => p.estado === 'pendiente').length,
+          label: 'Rechazadas',
+          value: rechazadas,
           icon: AlertCircle,
           color: 'bg-red-50 text-red-600',
         },
@@ -87,8 +75,8 @@ export function Dashboard() {
     }
     
     if (user.rol === 'coordinador') {
-      const enProgreso = mockPracticas.filter(p => p.estado === 'en_progreso').length;
-      const completadas = mockPracticas.filter(p => p.estado === 'completada').length;
+      const pendientes = mockPracticas.filter(p => p.estado === 'pendiente').length;
+      const aprobadas = mockPracticas.filter(p => p.estado === 'aprobado').length;
       
       return [
         {
@@ -98,14 +86,14 @@ export function Dashboard() {
           color: 'bg-indigo-50 text-indigo-600',
         },
         {
-          label: 'En Progreso',
-          value: enProgreso,
+          label: 'Pendientes',
+          value: pendientes,
           icon: Clock,
-          color: 'bg-orange-50 text-orange-600',
+          color: 'bg-yellow-50 text-yellow-600',
         },
         {
-          label: 'Completadas',
-          value: completadas,
+          label: 'Aprobadas',
+          value: aprobadas,
           icon: CheckCircle2,
           color: 'bg-green-50 text-green-600',
         },
@@ -138,13 +126,13 @@ export function Dashboard() {
 
   const getEstadoBadge = (estado: string) => {
     switch (estado) {
-      case 'en_progreso':
-        return 'bg-indigo-100 text-indigo-700';
-      case 'completada':
-        return 'bg-green-100 text-green-700';
       case 'pendiente':
         return 'bg-yellow-100 text-yellow-700';
-      case 'cancelada':
+      case 'actualizar':
+        return 'bg-blue-100 text-blue-700';
+      case 'aprobado':
+        return 'bg-green-100 text-green-700';
+      case 'rechazado':
         return 'bg-red-100 text-red-700';
       default:
         return 'bg-gray-100 text-gray-700';
@@ -152,7 +140,28 @@ export function Dashboard() {
   };
 
   const getEstadoLabel = (estado: string) => {
-    return estado.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const labels: Record<string, string> = {
+      'pendiente': 'Pendiente',
+      'actualizar': 'Actualizar',
+      'aprobado': 'Aprobado',
+      'rechazado': 'Rechazado',
+    };
+    return labels[estado] || estado.charAt(0).toUpperCase() + estado.slice(1);
+  };
+
+  const getEstadoBadgeDark = (estado: string) => {
+    switch (estado) {
+      case 'pendiente':
+        return 'bg-yellow-900/30 text-yellow-400';
+      case 'actualizar':
+        return 'bg-blue-900/30 text-blue-400';
+      case 'aprobado':
+        return 'bg-green-900/30 text-green-400';
+      case 'rechazado':
+        return 'bg-red-900/30 text-red-400';
+      default:
+        return 'bg-gray-700 text-gray-300';
+    }
   };
 
   return (
@@ -201,25 +210,12 @@ export function Dashboard() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-medium text-gray-900 dark:text-gray-100">{practica.estudianteNombre}</h3>
-                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${getEstadoBadge(practica.estado)} dark:${getEstadoBadge(practica.estado).replace('indigo', 'green').replace('bg-indigo-100', 'bg-green-900/30').replace('text-indigo-700', 'text-green-400')}`}>
+                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${getEstadoBadge(practica.estado)} dark:${getEstadoBadgeDark(practica.estado)}`}>
                         {getEstadoLabel(practica.estado)}
                       </span>
                     </div>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{practica.empresaNombre}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-500">{practica.area}</p>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {practica.horasCompletadas} / {practica.horasRequeridas} hrs
-                    </p>
-                    <div className="w-32 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full mt-2">
-                      <div
-                        className="h-full bg-indigo-600 dark:bg-green-600 rounded-full"
-                        style={{
-                          width: `${Math.min((practica.horasCompletadas / practica.horasRequeridas) * 100, 100)}%`,
-                        }}
-                      />
-                    </div>
                   </div>
                 </div>
               </div>

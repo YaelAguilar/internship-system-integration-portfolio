@@ -10,7 +10,6 @@ import {
   Building2,
   Calendar,
   User,
-  TrendingUp,
 } from 'lucide-react';
 
 export function PracticasPage() {
@@ -48,13 +47,13 @@ export function PracticasPage() {
 
   const getEstadoBadge = (estado: string) => {
     switch (estado) {
-      case 'en_progreso':
-        return 'bg-indigo-100 text-indigo-700';
-      case 'completada':
-        return 'bg-green-100 text-green-700';
       case 'pendiente':
         return 'bg-yellow-100 text-yellow-700';
-      case 'cancelada':
+      case 'actualizar':
+        return 'bg-blue-100 text-blue-700';
+      case 'aprobado':
+        return 'bg-green-100 text-green-700';
+      case 'rechazado':
         return 'bg-red-100 text-red-700';
       default:
         return 'bg-gray-100 text-gray-700';
@@ -62,15 +61,36 @@ export function PracticasPage() {
   };
 
   const getEstadoLabel = (estado: string) => {
-    return estado.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const labels: Record<string, string> = {
+      'pendiente': 'Pendiente',
+      'actualizar': 'Actualizar',
+      'aprobado': 'Aprobado',
+      'rechazado': 'Rechazado',
+    };
+    return labels[estado] || estado.charAt(0).toUpperCase() + estado.slice(1);
+  };
+
+  const getEstadoBadgeDark = (estado: string) => {
+    switch (estado) {
+      case 'pendiente':
+        return 'bg-yellow-900/30 text-yellow-400';
+      case 'actualizar':
+        return 'bg-blue-900/30 text-blue-400';
+      case 'aprobado':
+        return 'bg-green-900/30 text-green-400';
+      case 'rechazado':
+        return 'bg-red-900/30 text-red-400';
+      default:
+        return 'bg-gray-700 text-gray-300';
+    }
   };
 
   const estadoOptions = [
     { value: 'todos', label: 'Todos los estados' },
     { value: 'pendiente', label: 'Pendiente' },
-    { value: 'en_progreso', label: 'En Progreso' },
-    { value: 'completada', label: 'Completada' },
-    { value: 'cancelada', label: 'Cancelada' },
+    { value: 'actualizar', label: 'Actualizar' },
+    { value: 'aprobado', label: 'Aprobado' },
+    { value: 'rechazado', label: 'Rechazado' },
   ];
 
   return (
@@ -146,7 +166,7 @@ export function PracticasPage() {
                   <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1">{practica.estudianteNombre}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{practica.area}</p>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getEstadoBadge(practica.estado)} dark:${getEstadoBadge(practica.estado).replace('indigo', 'green').replace('bg-indigo-100', 'bg-green-900/30').replace('text-indigo-700', 'text-green-400')}`}>
+                <span className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getEstadoBadge(practica.estado)} dark:${getEstadoBadgeDark(practica.estado)}`}>
                   {getEstadoLabel(practica.estado)}
                 </span>
               </div>
@@ -168,30 +188,6 @@ export function PracticasPage() {
                     {' '}{new Date(practica.fechaFin).toLocaleDateString('es-ES')}
                   </span>
                 </div>
-              </div>
-
-              {/* Progreso */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                    <TrendingUp className="w-4 h-4" />
-                    <span>Progreso</span>
-                  </div>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">
-                    {practica.horasCompletadas} / {practica.horasRequeridas} hrs
-                  </span>
-                </div>
-                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-indigo-600 dark:bg-green-600 rounded-full transition-all"
-                    style={{
-                      width: `${Math.min((practica.horasCompletadas / practica.horasRequeridas) * 100, 100)}%`,
-                    }}
-                  />
-                </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 text-right">
-                  {Math.round((practica.horasCompletadas / practica.horasRequeridas) * 100)}% completado
-                </p>
               </div>
             </Link>
           ))

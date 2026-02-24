@@ -7,10 +7,8 @@ import {
   Building2,
   User,
   Calendar,
-  Clock,
   MapPin,
   Edit,
-  TrendingUp,
 } from 'lucide-react';
 
 export function PracticaDetail() {
@@ -43,13 +41,13 @@ export function PracticaDetail() {
 
   const getEstadoBadge = (estado: string) => {
     switch (estado) {
-      case 'en_progreso':
-        return 'bg-indigo-100 text-indigo-700';
-      case 'completada':
-        return 'bg-green-100 text-green-700';
       case 'pendiente':
         return 'bg-yellow-100 text-yellow-700';
-      case 'cancelada':
+      case 'actualizar':
+        return 'bg-blue-100 text-blue-700';
+      case 'aprobado':
+        return 'bg-green-100 text-green-700';
+      case 'rechazado':
         return 'bg-red-100 text-red-700';
       default:
         return 'bg-gray-100 text-gray-700';
@@ -57,15 +55,29 @@ export function PracticaDetail() {
   };
 
   const getEstadoLabel = (estado: string) => {
-    return estado.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const labels: Record<string, string> = {
+      'pendiente': 'Pendiente',
+      'actualizar': 'Actualizar',
+      'aprobado': 'Aprobado',
+      'rechazado': 'Rechazado',
+    };
+    return labels[estado] || estado.charAt(0).toUpperCase() + estado.slice(1);
   };
 
   const getEstadoBadgeDark = (estado: string) => {
-    const lightBadge = getEstadoBadge(estado);
-    return lightBadge.replace('indigo', 'green').replace('bg-indigo-100', 'bg-green-900/30').replace('text-indigo-700', 'text-green-400');
+    switch (estado) {
+      case 'pendiente':
+        return 'bg-yellow-900/30 text-yellow-400';
+      case 'actualizar':
+        return 'bg-blue-900/30 text-blue-400';
+      case 'aprobado':
+        return 'bg-green-900/30 text-green-400';
+      case 'rechazado':
+        return 'bg-red-900/30 text-red-400';
+      default:
+        return 'bg-gray-700 text-gray-300';
+    }
   };
-
-  const progreso = Math.round((practica.horasCompletadas / practica.horasRequeridas) * 100);
 
   return (
     <div className="space-y-6">
@@ -161,51 +173,6 @@ export function PracticaDetail() {
             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Descripción</p>
               <p className="text-gray-900 dark:text-gray-100">{practica.descripcion}</p>
-            </div>
-          </div>
-
-          {/* Progreso de Horas */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="font-bold text-gray-900 dark:text-gray-100 mb-4">Progreso de Horas</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-green-400" />
-                  <span className="font-medium text-gray-900 dark:text-gray-100">Avance General</span>
-                </div>
-                <span className="text-2xl font-bold text-indigo-600 dark:text-green-400">{progreso}%</span>
-              </div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-green-600 dark:to-green-500 rounded-full transition-all"
-                  style={{ width: `${progreso}%` }}
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-4 pt-2">
-                <div className="text-center">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Requeridas</p>
-                  <div className="flex items-center justify-center gap-1">
-                    <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-                    <p className="font-bold text-gray-900 dark:text-gray-100">{practica.horasRequeridas}</p>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Completadas</p>
-                  <div className="flex items-center justify-center gap-1">
-                    <Clock className="w-4 h-4 text-green-600 dark:text-green-400" />
-                    <p className="font-bold text-green-600 dark:text-green-400">{practica.horasCompletadas}</p>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Restantes</p>
-                  <div className="flex items-center justify-center gap-1">
-                    <Clock className="w-4 h-4 text-orange-600 dark:text-orange-400" />
-                    <p className="font-bold text-orange-600 dark:text-orange-400">
-                      {practica.horasRequeridas - practica.horasCompletadas}
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

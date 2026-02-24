@@ -29,7 +29,7 @@ export interface PracticaProfesional {
   fechaFin: string;
   horasRequeridas: number;
   horasCompletadas: number;
-  estado: 'pendiente' | 'en_progreso' | 'completada' | 'cancelada';
+  estado: 'pendiente' | 'actualizar' | 'aprobado' | 'rechazado';
   area: string;
   descripcion: string;
 }
@@ -144,7 +144,7 @@ export const mockPracticas: PracticaProfesional[] = [
     fechaFin: '2025-12-15',
     horasRequeridas: 480,
     horasCompletadas: 320,
-    estado: 'en_progreso',
+    estado: 'pendiente',
     area: 'Desarrollo Web',
     descripcion: 'Desarrollo de aplicaciones web con React y Node.js',
   },
@@ -161,7 +161,7 @@ export const mockPracticas: PracticaProfesional[] = [
     fechaFin: '2025-11-30',
     horasRequeridas: 400,
     horasCompletadas: 400,
-    estado: 'completada',
+    estado: 'aprobado',
     area: 'Diseño UX/UI',
     descripcion: 'Diseño de interfaces de usuario y experiencia de usuario',
   },
@@ -178,7 +178,7 @@ export const mockPracticas: PracticaProfesional[] = [
     fechaFin: '2026-01-31',
     horasRequeridas: 500,
     horasCompletadas: 150,
-    estado: 'en_progreso',
+    estado: 'pendiente',
     area: 'Análisis de Datos',
     descripcion: 'Análisis de datos empresariales con Python y SQL',
   },
